@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BPG Academy | Bishnu Prasad Gautam (BPG Sir) — Motherland Secondary School</title>
+    <meta name="description" content="Nepal's premier mathematics platform by Bishnu Prasad Gautam (BPG Sir), Faculty at Motherland Secondary School, Pokhara. Class 11, Class 12 & After 12 Entrance syllabus, deep reading notes, live classes, and PDFs.">
+    
+    <!-- Clean Academic Typography (Inter, Outfit & Fira Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- KaTeX CSS for LaTeX Math Formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    
+    <!-- Creamy Design Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ==========================================================================
+         1. HEADER & NAVIGATION BAR (BPG ACADEMY + SELECTIVE 3D ROTATION + BELL)
+         ========================================================================== -->
+    <header class="site-header">
+        <div class="container header-grid">
+            
+            <!-- Brand / Logo: Static "BPG" + 3D Y-Axis Rotating "Academy" -->
+            <a href="#about" class="brand-logo-text" onclick="navigateTo('about'); return false;" title="Return to Home">
+                <span class="brand-static">BPG</span>
+                <span class="brand-rotate-box">
+                    <span class="brand-rotating">Academy</span>
+                </span>
+                <span class="brand-dot"></span>
+            </a>
+
+            <!-- Centered Navigation -->
+            <nav class="navbar-centered">
+                <button class="nav-item-btn active" data-view="about" onclick="navigateTo('about')">
+                    About
+                </button>
+
+                <!-- Classes Dropdown Menu (Protected by Auth Guard) -->
+                <div class="dropdown-wrapper">
+                    <button class="nav-item-btn" id="classesDropdownBtn" aria-haspopup="true" onclick="toggleClassesDropdown(event)">
+                        Classes <i class="fa-solid fa-chevron-down" style="font-size:0.7rem; margin-left:3px;"></i>
+                    </button>
+                    <div class="dropdown-menu" id="classesDropdownMenu">
+                        <a href="#class-11" class="dropdown-link" onclick="navigateTo('class-11'); return false;">
+                            <div class="dropdown-link-top">
+                                <span>Class 11</span>
+                                <i class="fa-solid fa-lock auth-lock-icon"></i>
+                            </div>
+                            <small>NEB Grade 11 Master Hub</small>
+                        </a>
+                        <a href="#class-12" class="dropdown-link" onclick="navigateTo('class-12'); return false;">
+                            <div class="dropdown-link-top">
+                                <span>Class 12</span>
+                                <i class="fa-solid fa-lock auth-lock-icon"></i>
+                            </div>
+                            <small>NEB Grade 12 Master Hub</small>
+                        </a>
+                        <a href="#after-12" class="dropdown-link" onclick="navigateTo('after-12'); return false;">
+                            <div class="dropdown-link-top">
+                                <span>After 12</span>
+                                <span class="hold-mini-pill">Hold</span>
+                            </div>
+                            <small>IOE / CEE Entrance</small>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Right Slot: Notification Bell + Auth Button / Student Pill -->
+            <div class="header-auth-slot">
+                
+                <!-- Notification Bell Dropdown -->
+                <div class="notif-wrapper" id="notifWrapper">
+                    <button class="btn-notif-bell" id="notifBellBtn" onclick="toggleNotifDrawer(event)" title="Academic Notifications & Notices">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notif-unread-badge" id="notifUnreadBadge">3</span>
+                    </button>
+
+                    <div class="notif-drawer" id="notifDrawer">
+                        <div class="notif-drawer-head">
+                            <div>
+                                <h4>Academic Notices</h4>
+                                <small>BPG Academy Official Updates</small>
+                            </div>
+                            <button class="btn-mark-read" onclick="markAllNotificationsRead()">Mark all read</button>
+                        </div>
+                        <div class="notif-list" id="notifList">
+                            <div class="notif-item unread">
+                                <div class="notif-icon navy"><i class="fa-solid fa-bullhorn"></i></div>
+                                <div class="notif-content">
+                                    <strong>Class 11 & 12 Deep Reading Notes Live</strong>
+                                    <p>BPG Sir has uploaded comprehensive 1,000+ word derivations & Red-Pen mistake guides across Calculus & Algebra.</p>
+                                    <span>10 mins ago &bull; Super Admin</span>
+                                </div>
+                            </div>
+                            <div class="notif-item unread">
+                                <div class="notif-icon amber"><i class="fa-solid fa-clock"></i></div>
+                                <div class="notif-content">
+                                    <strong>Routine Update: Saturday Mock Test</strong>
+                                    <p>Full NEB Board Pattern 75-Marks Mock Exam starts sharp at 7:00 AM NPT via Live Zoom Classroom.</p>
+                                    <span>2 hours ago &bull; Routine Desk</span>
+                                </div>
+                            </div>
+                            <div class="notif-item unread">
+                                <div class="notif-icon emerald"><i class="fa-solid fa-file-pdf"></i></div>
+                                <div class="notif-content">
+                                    <strong>NEB 2082/2083 Specification Grid Added</strong>
+                                    <p>Check the updated Syllabus & Notes tabs for unit-wise weightage and Diamond Ranker formula sheets.</p>
+                                    <span>Yesterday &bull; Exam Cell</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logged-Out: Google Sign-In Button -->
+                <button class="btn-google-sign" id="headerGoogleBtn" onclick="openAuthModal()">
+                    <svg class="google-icon-svg" viewBox="0 0 18 18">
+                        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.616z"/>
+                        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                        <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.173 0 7.548 0 9s.347 2.827.957 4.039l3.007-2.332z"/>
+                        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
+                    </svg>
+                    <span>Sign in with Google</span>
+                </button>
+
+                <!-- Logged-In: Student Profile Pill -->
+                <div class="auth-user-pill" id="headerUserPill">
+                    <span class="user-avatar" id="headerUserAvatar">R</span>
+                    <div class="user-info-text">
+                        <span id="headerUserName">Rohan</span>
+                        <span class="user-badge-role" id="headerUserRole">Class 11</span>
+                    </div>
+                    <button class="btn-signout" onclick="handleSignOut()" title="Sign Out">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         VIEW 1: ABOUT (HOME LANDING PAGE — ACCESSIBLE TO ALL GUESTS)
+         Taskbar is strictly hidden here; mounts only inside Class 11 / 12 portals.
+         ========================================================================== -->
+    <main class="view-container active" id="view-about">
+        <div class="container">
+            
+            <!-- Educator Hero Showcase -->
+            <section class="about-hero">
+                <div class="about-hero-grid">
+                    
+                    <!-- Portrait Column (Official Portrait of BPG Sir) -->
+                    <div class="about-portrait-wrap">
+                        <div class="about-portrait-frame">
+                            <img src="./images/bpg_sir.jpg" alt="Bishnu Prasad Gautam (BPG Sir) - Faculty at Motherland Secondary School, Pokhara" class="about-portrait-img">
+                        </div>
+                        <div class="about-portrait-badge">
+                            <i class="fa-solid fa-building-columns" style="color:var(--accent-navy);"></i>
+                            <span>Motherland Sec. School, Pokhara</span>
+                        </div>
+                    </div>
+
+                    <!-- Bio Column -->
+                    <div class="about-bio-content">
+                        <div class="about-tag">Academic Leadership & Mentorship</div>
+                        <h1 class="about-name">Bishnu Prasad Gautam <span style="color:var(--accent-navy); font-weight:700;">(BPG Sir)</span></h1>
+                        <p class="about-subtitle">Faculty, Motherland Secondary School, Pokhara &bull; Senior Mathematics Specialist</p>
+                        
+                        <p class="about-text">
+                            Welcome to <strong>BPG Academy</strong>. Led by Bishnu Prasad Gautam (BPG Sir), this comprehensive academic portal is engineered to empower Nepalese students across <strong>Class 11, Class 12, and After 12 Entrance</strong> examinations.
+                        </p>
+                        <p class="about-text">
+                            Drawing from more than a decade of teaching excellence at Motherland Secondary School, Pokhara, BPG Sir transforms complex Calculus, 3D Vectors, Analytical Conics, and Algebra into crystal-clear visual derivations—helping thousands of students achieve NEB board distinctions and top engineering ranks.
+                        </p>
+
+                        <div class="about-highlights-grid">
+                            <div class="about-hl-card">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>10+ Years Dedicated Teaching at Motherland Sec. School</span>
+                            </div>
+                            <div class="about-hl-card">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Author of NEB Red-Pen Common Mistake Guides</span>
+                            </div>
+                            <div class="about-hl-card">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>IOE, CEE & University Engineering Mentor</span>
+                            </div>
+                            <div class="about-hl-card">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>10,000+ Students Mentored Across Nepal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Class Pathways Teaser (Protected by Auth Guard) -->
+            <section class="classes-teaser-section">
+                <div class="section-intro-head">
+                    <h2>Academic Curriculum Pathways</h2>
+                    <p>Sign in with your student account to unlock deep reading chapters, NEB syllabus breakdowns, live Zoom classrooms, and PDF vaults.</p>
+                </div>
+
+                <div class="class-pathway-cards">
+                    <!-- Pathway 1: Class 11 -->
+                    <div class="pathway-card">
+                        <div>
+                            <div class="pathway-card-top">
+                                <span class="pathway-badge">Grade 11 NEB</span>
+                                <span class="pathway-lock-status"><i class="fa-solid fa-lock auth-lock-icon"></i> Student Portal</span>
+                            </div>
+                            <h3 class="pathway-title">Class 11 Mathematics</h3>
+                            <p class="pathway-desc">
+                                Complete 5-unit NEB curriculum with 1,000+ word deep theoretical chapters, first-principle calculus derivations, analytical geometry, and live classes.
+                            </p>
+                        </div>
+                        <button class="btn-open-class" onclick="navigateTo('class-11')">
+                            <span>Open Class 11 Portal</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Pathway 2: Class 12 -->
+                    <div class="pathway-card">
+                        <div>
+                            <div class="pathway-card-top">
+                                <span class="pathway-badge">Grade 12 NEB</span>
+                                <span class="pathway-lock-status"><i class="fa-solid fa-lock auth-lock-icon"></i> Student Portal</span>
+                            </div>
+                            <h3 class="pathway-title">Class 12 Mathematics</h3>
+                            <p class="pathway-desc">
+                                Synchronized 7-unit master hub covering Permutations, Binomial Theorem, Complex Numbers, Conic Sections, Advanced Integration, Differential Equations, and 3D Vectors.
+                            </p>
+                        </div>
+                        <button class="btn-open-class" onclick="navigateTo('class-12')">
+                            <span>Open Class 12 Portal</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Pathway 3: After 12 -->
+                    <div class="pathway-card pathway-hold">
+                        <div>
+                            <div class="pathway-card-top">
+                                <span class="pathway-badge amber">IOE / CEE Entrance</span>
+                                <span class="pathway-lock-status">Opening Soon</span>
+                            </div>
+                            <h3 class="pathway-title">After 12 (Entrance)</h3>
+                            <p class="pathway-desc">
+                                High-speed MCQ shortcuts, Casio calculator exam hacks, and 15-year Pulchowk IOE & CEE question bank. Currently under curriculum assembly for the upcoming session.
+                            </p>
+                        </div>
+                        <button class="btn-open-class outline" onclick="navigateTo('after-12')">
+                            <span>View Entrance Status</span>
+                            <i class="fa-solid fa-clock"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         VIEW 2: CLASS 11 MASTER HUB (AUTHENTICATED PORTAL)
+         Hero + 5-Tab Master Taskbar (Syllabus | Units & Topics | Premium Plans | Live Zoom Classroom | Notes & PDFs)
+         ========================================================================== -->
+    <main class="view-container" id="view-class-11">
+        <div class="container">
+            
+            <!-- Hero Hub Banner -->
+            <div class="class-hero-banner">
+                <div>
+                    <div class="breadcrumb-nav">
+                        <a href="#about" onclick="navigateTo('about'); return false;">Home</a>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.65rem;"></i>
+                        <span>Classes</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.65rem;"></i>
+                        <span>Class 11</span>
+                    </div>
+                    <h1 class="class-banner-title">Class 11 Mathematics Master Hub</h1>
+                    <p class="class-banner-sub">
+                        Led by <strong>Bishnu Prasad Gautam (BPG Sir)</strong> &bull; Faculty, Motherland Secondary School, Pokhara
+                    </p>
+                </div>
+                <div class="class-hero-actions">
+                    <button class="btn-hero-action" onclick="switchClassTab('class-11', 'live', document.getElementById('tab-c11-live'))">
+                        <i class="fa-solid fa-video"></i> Live Zoom Class
+                    </button>
+                    <button class="btn-hero-outline" onclick="switchClassTab('class-11', 'notes', document.getElementById('tab-c11-notes'))">
+                        <i class="fa-solid fa-folder-open"></i> Materials & Resources
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5-Tab Master Taskbar (Mounted only inside Class Portal) -->
+            <div class="class-subtabs-nav" role="tablist" aria-label="Class 11 Navigation Tabs">
+                <button class="class-tab-pill active" id="tab-c11-syllabus" onclick="switchClassTab('class-11', 'syllabus', this)">
+                    <i class="fa-solid fa-table-list"></i> 1. Syllabus
+                </button>
+                <button class="class-tab-pill" id="tab-c11-units" onclick="switchClassTab('class-11', 'units', this)">
+                    <i class="fa-solid fa-book-open-reader"></i> 2. Units & Topics
+                </button>
+                <button class="class-tab-pill" id="tab-c11-plans" onclick="switchClassTab('class-11', 'plans', this)">
+                    <i class="fa-solid fa-crown"></i> 3. Premium Plans
+                </button>
+                <button class="class-tab-pill" id="tab-c11-live" onclick="switchClassTab('class-11', 'live', this)">
+                    <i class="fa-solid fa-video"></i> 4. Live Zoom Classroom
+                </button>
+                <button class="class-tab-pill" id="tab-c11-notes" onclick="switchClassTab('class-11', 'notes', this)">
+                    <i class="fa-solid fa-file-pdf"></i> 5. Notes & PDFs
+                </button>
+            </div>
+
+            <!-- TAB 1: SYLLABUS (NEB Weightage Table & Curriculum Roadmap) -->
+            <div class="class-tab-pane active" id="pane-class-11-syllabus">
+                <div id="syllabusContainer-class-11"></div>
+            </div>
+
+            <!-- TAB 2: UNITS & TOPICS (High-Capacity Deep Reading Engine + Super Admin Slots) -->
+            <div class="class-tab-pane" id="pane-class-11-units">
+                <div class="deep-reader-toolbar">
+                    <div class="reader-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-class-11" placeholder="Filter Class 11 topics by keyword (e.g. Limits, Logic, Complex, Circle, Derivative)..." oninput="filterUnitsTree('class-11', this.value)">
+                    </div>
+                    <div class="cms-status-badge">
+                        <i class="fa-solid fa-database"></i> Super Admin CMS Ready &bull; Deep Reading Engine
+                    </div>
+                </div>
+
+                <div class="deep-reader-layout">
+                    <!-- Column A: Units Tree Sidebar -->
+                    <aside class="reader-sidebar" id="readerSidebar-class-11"></aside>
+                    <!-- Panel B: Comprehensive 1,000+ Word Reading Canvas -->
+                    <article class="reader-canvas" id="readerCanvas-class-11"></article>
+                </div>
+            </div>
+
+            <!-- TAB 3: PREMIUM PLANS (3-Tier Comparison: Free Community, Gold Distinction, Diamond Ranker) -->
+            <div class="class-tab-pane" id="pane-class-11-plans">
+                <div id="plansContainer-class-11"></div>
+            </div>
+
+            <!-- TAB 4: LIVE ZOOM CLASSROOM -->
+            <div class="class-tab-pane" id="pane-class-11-live">
+                <div class="live-classroom-card">
+                    <div>
+                        <div class="live-status-pill">
+                            <span class="live-pulse-dot"></span> DAILY MORNING BATCH (CLASS 11)
+                        </div>
+                        <h2 class="live-card-title">Class 11 Live Problem Solving & Derivation Room</h2>
+                        <p class="live-card-desc">
+                            Interactive digital whiteboard sessions, step-by-step first-principle calculus proofs, and live audio doubt clearing directly with Bishnu Prasad Gautam (BPG Sir).
+                        </p>
+
+                        <div class="zoom-credentials-box">
+                            <div class="zoom-cred-row">
+                                <span><i class="fa-solid fa-id-card"></i> Zoom Meeting ID:</span>
+                                <span class="zoom-cred-val">984 1023 8899</span>
+                                <button class="btn-copy-cred" onclick="copyText('98410238899', 'Class 11 Meeting ID copied!')">Copy</button>
+                            </div>
+                            <div class="zoom-cred-row">
+                                <span><i class="fa-solid fa-key"></i> Passcode:</span>
+                                <span class="zoom-cred-val">BPGMATH11</span>
+                                <button class="btn-copy-cred" onclick="copyText('BPGMATH11', 'Class 11 Passcode copied!')">Copy</button>
+                            </div>
+                            <div class="zoom-cred-row">
+                                <span><i class="fa-solid fa-clock"></i> Batch Timings:</span>
+                                <span style="font-weight:700; color:var(--text-primary);">6:30 AM – 7:45 AM NPT (Sun – Fri)</span>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                            <a href="https://zoom.us/j/98410238899?pwd=BPGMATH11#success" target="_blank" class="btn-hero-action">
+                                <i class="fa-solid fa-video"></i> Launch Live Zoom Classroom
+                            </a>
+                            <a href="https://wa.me/9779841000000?text=Namaste%20BPG%20Sir,%20please%20share%20the%20Class%2011%20Live%20Zoom%20link" target="_blank" class="btn-hero-outline">
+                                <i class="fa-brands fa-whatsapp"></i> Request Link on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="weekly-routine-box">
+                        <h4 style="font-size:1.05rem;"><i class="fa-solid fa-calendar-days" style="color:var(--accent-navy);"></i> Class 11 Weekly Routine</h4>
+                        <ul class="weekly-routine-list">
+                            <li><span>Sun – Mon:</span> <strong>Unit 05: Calculus (Limits & Derivatives)</strong></li>
+                            <li><span>Tue – Wed:</span> <strong>Unit 02: Algebra & Complex Numbers</strong></li>
+                            <li><span>Thursday:</span> <strong>Unit 03 & 04: Trigonometry & Analytical Circle</strong></li>
+                            <li><span>Friday:</span> <strong>Unit 01: Logic, Sets & Vectors</strong></li>
+                            <li><span>Saturday:</span> <strong>NEB 75-Marks Timed Board Mock & Red-Pen Review</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: NOTES & PDFS -->
+            <div class="class-tab-pane" id="pane-class-11-notes">
+                <div id="notesContainer-class-11"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         VIEW 3: CLASS 12 MASTER HUB (SYNCHRONIZED 5-TAB PORTAL & DEEP READER)
+         ========================================================================== -->
+    <main class="view-container" id="view-class-12">
+        <div class="container">
+            
+            <!-- Hero Hub Banner -->
+            <div class="class-hero-banner">
+                <div>
+                    <div class="breadcrumb-nav">
+                        <a href="#about" onclick="navigateTo('about'); return false;">Home</a>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.65rem;"></i>
+                        <span>Classes</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.65rem;"></i>
+                        <span>Class 12</span>
+                    </div>
+                    <h1 class="class-banner-title">Class 12 Mathematics Master Hub</h1>
+                    <p class="class-banner-sub">
+                        Led by <strong>Bishnu Prasad Gautam (BPG Sir)</strong> &bull; Faculty, Motherland Secondary School, Pokhara
+                    </p>
+                </div>
+                <div class="class-hero-actions">
+                    <button class="btn-hero-action" onclick="switchClassTab('class-12', 'live', document.getElementById('tab-c12-live'))">
+                        <i class="fa-solid fa-video"></i> Live Zoom Class
+                    </button>
+                    <button class="btn-hero-outline" onclick="switchClassTab('class-12', 'notes', document.getElementById('tab-c12-notes'))">
+                        <i class="fa-solid fa-folder-open"></i> Materials & Resources
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5-Tab Master Taskbar (Synchronized with Class 11) -->
+            <div class="class-subtabs-nav" role="tablist" aria-label="Class 12 Navigation Tabs">
+                <button class="class-tab-pill active" id="tab-c12-syllabus" onclick="switchClassTab('class-12', 'syllabus', this)">
+                    <i class="fa-solid fa-table-list"></i> 1. Syllabus
+                </button>
+                <button class="class-tab-pill" id="tab-c12-units" onclick="switchClassTab('class-12', 'units', this)">
+                    <i class="fa-solid fa-book-open-reader"></i> 2. Units & Topics
+                </button>
+                <button class="class-tab-pill" id="tab-c12-plans" onclick="switchClassTab('class-12', 'plans', this)">
+                    <i class="fa-solid fa-crown"></i> 3. Premium Plans
+                </button>
+                <button class="class-tab-pill" id="tab-c12-live" onclick="switchClassTab('class-12', 'live', this)">
+                    <i class="fa-solid fa-video"></i> 4. Live Zoom Classroom
+                </button>
+                <button class="class-tab-pill" id="tab-c12-notes" onclick="switchClassTab('class-12', 'notes', this)">
+                    <i class="fa-solid fa-file-pdf"></i> 5. Notes & PDFs
+                </button>
+            </div>
+
+            <!-- TAB 1: SYLLABUS -->
+            <div class="class-tab-pane active" id="pane-class-12-syllabus">
+                <div id="syllabusContainer-class-12"></div>
+            </div>
+
+            <!-- TAB 2: UNITS & TOPICS (Deep Reading Engine for Class 12) -->
+            <div class="class-tab-pane" id="pane-class-12-units">
+                <div class="deep-reader-toolbar">
+                    <div class="reader-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-class-12" placeholder="Filter Class 12 topics by keyword (e.g. Permutation, Binomial, De Moivre, Conics, Integration, Vectors)..." oninput="filterUnitsTree('class-12', this.value)">
+                    </div>
+                    <div class="cms-status-badge">
+                        <i class="fa-solid fa-database"></i> Super Admin CMS Ready &bull; Deep Reading Engine
+                    </div>
+                </div>
+
+                <div class="deep-reader-layout">
+                    <!-- Column A: Units Tree Sidebar -->
+                    <aside class="reader-sidebar" id="readerSidebar-class-12"></aside>
+                    <!-- Panel B: Comprehensive 1,000+ Word Reading Canvas -->
+                    <article class="reader-canvas" id="readerCanvas-class-12"></article>
+                </div>
+            </div>
+
+            <!-- TAB 3: PREMIUM PLANS -->
+            <div class="class-tab-pane" id="pane-class-12-plans">
+                <div id="plansContainer-class-12"></div>
+            </div>
+
+            <!-- TAB 4: LIVE ZOOM CLASSROOM -->
+            <div class="class-tab-pane" id="pane-class-12-live">
+                <div class="live-classroom-card">
+                    <div>
+                        <div class="live-status-pill">
+                            <span class="live-pulse-dot"></span> DAILY EVENING BATCH (CLASS 12)
+                        </div>
+                        <h2 class="live-card-title">Class 12 NEB Board Distinction Live Lecture Room</h2>
+                        <p class="live-card-desc">
+                            In-depth derivations on Standard Integrals, Differential Equations, Conic Sections, De Moivre's Theorem, and 3D Planes with Bishnu Prasad Gautam (BPG Sir).
+                        </p>
+
+                        <div class="zoom-credentials-box">
+                            <div class="zoom-cred-row">
+                                <span><i class="fa-solid fa-id-card"></i> Zoom Meeting ID:</span>
+                                <span class="zoom-cred-val">984 1023 8899</span>
+                                <button class="btn-copy-cred" onclick="copyText('98410238899', 'Class 12 Meeting ID copied!')">Copy</button>
+                            </div>
+                            <div class="zoom-cred-row">
+                                <span><i class="fa-solid fa-key"></i> Passcode:</span>
+                                <span class="zoom-cred-val">BPGMATH12</span>
+                                <button class="btn-copy-cred" onclick="copyText('BPGMATH12', 'Class 12 Passcode copied!')">Copy</button>
+                            </div>
+                            <div class="zoom-cred-row">
+                                <span><i class="fa-solid fa-clock"></i> Batch Timings:</span>
+                                <span style="font-weight:700; color:var(--text-primary);">5:00 PM – 6:15 PM NPT (Sun – Fri)</span>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                            <a href="https://zoom.us/j/98410238899?pwd=BPGMATH12#success" target="_blank" class="btn-hero-action">
+                                <i class="fa-solid fa-video"></i> Launch Live Zoom Classroom
+                            </a>
+                            <a href="https://wa.me/9779841000000?text=Namaste%20BPG%20Sir,%20please%20share%20the%20Class%2012%20Live%20Zoom%20link" target="_blank" class="btn-hero-outline">
+                                <i class="fa-brands fa-whatsapp"></i> Request Link on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="weekly-routine-box">
+                        <h4 style="font-size:1.05rem;"><i class="fa-solid fa-calendar-days" style="color:var(--accent-navy);"></i> Class 12 Weekly Routine</h4>
+                        <ul class="weekly-routine-list">
+                            <li><span>Sun – Mon:</span> <strong>Unit 06: Differential & Integral Calculus</strong></li>
+                            <li><span>Tuesday:</span> <strong>Unit 01 & 02: Permutations & Binomial Theorem</strong></li>
+                            <li><span>Wednesday:</span> <strong>Unit 03: Complex Numbers (De Moivre) & Matrices</strong></li>
+                            <li><span>Thursday:</span> <strong>Unit 05: Conic Sections (Parabola, Ellipse, Hyperbola)</strong></li>
+                            <li><span>Friday:</span> <strong>Unit 07: 3D Coordinates, Planes & Vector Products</strong></li>
+                            <li><span>Saturday:</span> <strong>NEB Board Model Exam & Red-Pen Evaluation</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: NOTES & PDFS -->
+            <div class="class-tab-pane" id="pane-class-12-notes">
+                <div id="notesContainer-class-12"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         VIEW 4: AFTER 12 (ENTRANCE) — TEMPORARY HOLD / CURRICULUM ASSEMBLY STATE
+         ========================================================================== -->
+    <main class="view-container" id="view-after-12">
+        <div class="container">
+            <div class="entrance-hold-card">
+                <div class="hold-icon-ring">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                </div>
+                <span class="pathway-badge amber">IOE Pulchowk &bull; CEE &bull; KU Entrance</span>
+                <h1 class="hold-title">Curriculum Under Assembly — Opening Soon for Entrance Session</h1>
+                <p class="hold-desc">
+                    The <strong>After 12 Engineering & Medical Applied Mathematics Hub</strong> is currently being curated by <strong>Bishnu Prasad Gautam (BPG Sir)</strong> with 10-second MCQ speed shortcuts, Casio fx-991CW/EX matrix & calculus hacks, and 15-year solved Pulchowk IOE archives.
+                </p>
+
+                <div class="hold-milestones-grid">
+                    <div class="hold-milestone-item">
+                        <i class="fa-solid fa-check-double" style="color:var(--accent-emerald);"></i>
+                        <div>
+                            <strong>Class 11 & 12 Foundation Portals</strong>
+                            <small>100% Live & Accessible Now</small>
+                        </div>
+                    </div>
+                    <div class="hold-milestone-item">
+                        <i class="fa-solid fa-spinner fa-spin" style="color:var(--accent-amber);"></i>
+                        <div>
+                            <strong>IOE / CEE 1,000+ MCQ Speed Bank</strong>
+                            <small>In Super Admin Review</small>
+                        </div>
+                    </div>
+                    <div class="hold-milestone-item">
+                        <i class="fa-solid fa-calendar-check" style="color:var(--accent-navy);"></i>
+                        <div>
+                            <strong>Live Entrance Batch Registration</strong>
+                            <small>Pre-Booking Open via WhatsApp</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:28px;">
+                    <a href="https://wa.me/9779841000000?text=Namaste%20BPG%20Sir,%20please%20notify%20me%20when%20the%20After%2012%20IOE%20Entrance%20portal%20opens" target="_blank" class="btn-hero-action">
+                        <i class="fa-brands fa-whatsapp"></i> Pre-Register for Entrance Batch
+                    </a>
+                    <button class="btn-hero-outline" onclick="navigateTo('class-12')">
+                        <i class="fa-solid fa-arrow-left"></i> Explore Class 12 Master Hub
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         FLOATING WIDGETS:
+         1. Floating WhatsApp Inquiry Trigger (Left/Opposite Edge)
+         2. Floating & Draggable Scientific Calculator Widget (Right Edge)
+         ========================================================================== -->
+    <a href="https://wa.me/9779841000000?text=Namaste%20BPG%20Sir,%20I%20have%20an%20academic%20inquiry%20regarding%20BPG%20Academy" target="_blank" class="floating-whatsapp-btn" title="Chat Directly with BPG Sir on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>Ask BPG Sir</span>
+    </a>
+
+    <div class="draggable-calc-widget" id="draggableCalcWidget" role="dialog" aria-label="Scientific Calculator">
+        <div class="calc-drag-handle" id="calcDragHandle">
+            <div class="drag-title-group">
+                <i class="fa-solid fa-grip-vertical drag-dots-icon"></i>
+                <span>Scientific Calculator</span>
+            </div>
+            <div class="calc-widget-controls">
+                <button class="calc-widget-btn" id="calcAngleBtn" onclick="toggleCalcAngle()" title="Toggle DEG / RAD Mode">
+                    DEG
+                </button>
+                <button class="calc-widget-btn" id="calcWidgetCloseBtn" title="Close Calculator">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="calc-widget-body">
+            <div class="calc-lcd-screen">
+                <div class="calc-expr-line" id="calcExprDisplay">Ready</div>
+                <div class="calc-val-line" id="calcValDisplay">0</div>
+            </div>
+
+            <div class="calc-keypad-matrix">
+                <button class="cw-btn btn-op" onclick="appendScientific('sin')">sin</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('cos')">cos</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('tan')">tan</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('log')">log</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('ln')">ln</button>
+
+                <button class="cw-btn btn-op" onclick="appendScientific('sqrt')">√</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('sq')">x²</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('pow')">xʸ</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('pi')">π</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('e')">e</button>
+
+                <button class="cw-btn btn-op" onclick="appendCalc('(')">(</button>
+                <button class="cw-btn btn-op" onclick="appendCalc(')')">)</button>
+                <button class="cw-btn btn-del" onclick="clearCalc()">AC</button>
+                <button class="cw-btn btn-del" onclick="backspaceCalc()">⌫</button>
+                <button class="cw-btn btn-op" onclick="appendCalc('÷')">÷</button>
+
+                <button class="cw-btn" onclick="appendCalc('7')">7</button>
+                <button class="cw-btn" onclick="appendCalc('8')">8</button>
+                <button class="cw-btn" onclick="appendCalc('9')">9</button>
+                <button class="cw-btn btn-op" onclick="appendCalc('×')">×</button>
+                <button class="cw-btn btn-op" onclick="appendScientific('ans')">ANS</button>
+
+                <button class="cw-btn" onclick="appendCalc('4')">4</button>
+                <button class="cw-btn" onclick="appendCalc('5')">5</button>
+                <button class="cw-btn" onclick="appendCalc('6')">6</button>
+                <button class="cw-btn btn-op" onclick="appendCalc('-')">-</button>
+                <button class="cw-btn btn-op" onclick="appendCalc('%')">%</button>
+
+                <button class="cw-btn" onclick="appendCalc('1')">1</button>
+                <button class="cw-btn" onclick="appendCalc('2')">2</button>
+                <button class="cw-btn" onclick="appendCalc('3')">3</button>
+                <button class="cw-btn btn-op" onclick="appendCalc('+')">+</button>
+                <button class="cw-btn btn-eval" onclick="evaluateCalc()">=</button>
+
+                <button class="cw-btn" onclick="appendCalc('0')" style="grid-column: span 2;">0</button>
+                <button class="cw-btn" onclick="appendCalc('.')">.</button>
+                <button class="cw-btn btn-op" onclick="appendCalc('-')">±</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="floating-calc-trigger-btn" id="floatingCalcTriggerBtn" title="Toggle Scientific Calculator">
+        <i class="fa-solid fa-calculator"></i>
+        <span>Calculator</span>
+    </button>
+
+    <!-- ==========================================================================
+         AUTHENTICATION & STUDENT ONBOARDING MODAL (AUTH GUARD GATEWAY)
+         ========================================================================== -->
+    <div class="auth-modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+        <div class="auth-modal-card">
+            <button class="btn-modal-dismiss" onclick="closeAuthModal()" title="Close dialog">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="auth-tabs-row">
+                <button class="auth-tab-btn active" id="tabBtn-google" onclick="switchAuthTab('google')">
+                    Student Registration
+                </button>
+                <button class="auth-tab-btn" id="tabBtn-login" onclick="switchAuthTab('login')">
+                    Student Login
+                </button>
+            </div>
+
+            <!-- Pane 1: Google Onboarding -->
+            <div class="auth-step-pane active" id="tabPane-google">
+                <div style="text-align:center; margin-bottom:20px;">
+                    <div style="width:52px; height:52px; border-radius:50%; background:var(--bg-cream-subtle); color:var(--accent-navy); display:flex; align-items:center; justify-content:center; font-size:1.35rem; margin:0 auto 12px;">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <h3 id="authModalTitle" style="font-size:1.25rem;">Unlock BPG Academy Class Portals</h3>
+                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">
+                        Verify with Google to access Class 11, Class 12 & Entrance deep reading notes, syllabus, and live Zoom classes.
+                    </p>
+                </div>
+
+                <button class="btn-google-sign" style="width:100%; justify-content:center; padding:12px;" onclick="startGoogleOnboarding()">
+                    <svg class="google-icon-svg" viewBox="0 0 18 18">
+                        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.616z"/>
+                        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                        <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.173 0 7.548 0 9s.347 2.827.957 4.039l3.007-2.332z"/>
+                        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
+                    </svg>
+                    <span>Continue with Google</span>
+                </button>
+            </div>
+
+            <!-- Pane 2: Student Profile & Password Setup -->
+            <div class="auth-step-pane" id="tabPane-setup">
+                <form onsubmit="handleCompleteRegistration(event)">
+                    <div class="form-group-field">
+                        <label>Student Full Name</label>
+                        <input type="text" id="setupName" placeholder="e.g. Rohan Sharma" value="Rohan Sharma" required>
+                    </div>
+
+                    <div class="form-group-field">
+                        <label>Choose Student Username</label>
+                        <input type="text" id="setupUsername" placeholder="e.g. @rohan_sharma11" value="@rohan_sharma11" required>
+                        <small id="usernameHint" style="display:block; margin-top:4px; font-size:0.75rem; color:var(--text-tertiary);">Must contain @ and at least one number</small>
+                    </div>
+
+                    <div class="form-group-field">
+                        <label>Verified Google Email</label>
+                        <input type="email" id="setupEmail" value="student.motherland@gmail.com" required readonly style="background:var(--bg-cream-subtle);">
+                    </div>
+
+                    <div class="form-group-field">
+                        <label>Set Portal Password</label>
+                        <input type="password" id="setupPassword" placeholder="Minimum 6 characters" value="motherland123" minlength="6" required>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div class="form-group-field">
+                            <label>Target Grade</label>
+                            <select id="setupGrade">
+                                <option value="Class 11">Class 11 NEB</option>
+                                <option value="Class 12">Class 12 NEB</option>
+                                <option value="After 12 (Entrance)">After 12 (IOE/CEE)</option>
+                            </select>
+                        </div>
+                        <div class="form-group-field">
+                            <label>School / College</label>
+                            <input type="text" id="setupSchool" value="Motherland Secondary School, Pokhara">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary-block">
+                        <i class="fa-solid fa-unlock-keyhole"></i> Complete Setup & Unlock Portals
+                    </button>
+                </form>
+            </div>
+
+            <!-- Pane 3: Returning Student Login -->
+            <div class="auth-step-pane" id="tabPane-login">
+                <form onsubmit="handleReturningLogin(event)">
+                    <div class="form-group-field">
+                        <label>Username or Email</label>
+                        <input type="text" id="loginUsername" placeholder="e.g. @rohan_sharma11" required>
+                    </div>
+
+                    <div class="form-group-field">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary-block">
+                        <i class="fa-solid fa-right-to-bracket"></i> Sign In to BPG Academy
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimalist Academic Footer -->
+    <footer class="site-footer">
+        <div class="container footer-flex">
+            <div>
+                <strong>BPG Academy</strong> &bull; Faculty: <strong>Bishnu Prasad Gautam (BPG Sir)</strong>, Motherland Secondary School, Pokhara.
+            </div>
+            <div>
+                &copy; 2026 BPG Academy Nepal. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- KaTeX JS for LaTeX formulas -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Application Engine Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
